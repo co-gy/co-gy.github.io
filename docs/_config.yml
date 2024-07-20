@@ -10,7 +10,3 @@ minima:
   date_format: "%b %-d, %Y"
   social_links:
     - { platform: github,  user_url: "https://github.com/co-py" }
-
-author:
-  name: co-py
-  email: "gyc5529@gmail.com"
