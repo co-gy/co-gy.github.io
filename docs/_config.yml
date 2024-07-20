@@ -4,7 +4,7 @@ remote_theme: jekyll/minima
 url: https://co-gy.github.io/
 author: co-gy
 plugins:
-  - jekyll-feed
+  # - jekyll-feed
   - jekyll-seo-tag
   - jekyll-relative-links
   - jekyll-remote-theme
