@@ -138,7 +138,7 @@ layout: home
     {%- if my_page.title -%}
     <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
     <p>{{ my_page.title }}</p>
-    <p>{{ my_page.dir }}</p>
+    <p>{{ my_page.dir | basename }}</p>
     <p>{{ my_page.name }}</p>
     <p>{{ my_page.name }}</p>
     {{ my_page.url }}
