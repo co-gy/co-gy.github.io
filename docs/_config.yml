@@ -6,7 +6,12 @@ author: co-gy
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-relative-links
 
+relative_links:
+  enabled: true
+  collections: true
+  
 header_pages:
   - about.md
 
