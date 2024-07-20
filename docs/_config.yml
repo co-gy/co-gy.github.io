@@ -17,7 +17,7 @@ header_pages:
   - about.md
 
 minima:
-  skin: solarized
+  skin: classic
   social_links:
     - { platform: github,  user_url: "https://github.com/co-py" }
 
