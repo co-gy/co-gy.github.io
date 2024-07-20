@@ -1,0 +1,6 @@
+title: co-gy's blog
+theme: jekyll-theme-cayman
+url: https://co-gy.github.io/
+author: co-gy
+plugins:
+  - jekyll-feed
