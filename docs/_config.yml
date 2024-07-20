@@ -1,5 +1,6 @@
 title: co-gy's blog
-theme: jekyll-theme-cayman
+description: ~ ~ ~
+theme: minima
 url: https://co-gy.github.io/
 author: co-gy
 plugins:
