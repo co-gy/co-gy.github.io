@@ -1,17 +1,18 @@
 title: co-gy's blog
 description: ~ ~ ~
-theme: minima
+remote_theme: jekyll/minima
 url: https://co-gy.github.io/
 author: co-gy
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-relative-links
+  - jekyll-remote-theme
 
 relative_links:
   enabled: true
   collections: true
-  
+
 header_pages:
   - about.md
 
