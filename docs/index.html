@@ -1,7 +1,118 @@
 ---
 layout: home
 ---
-<div class="my-blockkkk">
+<head>
+<style>
+            .blog-card {
+            display: flex;
+            flex-direction: column;
+            margin: 1rem auto;
+            box-shadow: 0 3px 7px -1px rgba(#000, 0.1);
+            margin-bottom: 1.6%;
+            background: #fff;
+            line-height: 1.4;
+            font-family: sans-serif;
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 0;
+
+            a {
+                color: inherit;
+
+                &:hover {
+                    color: #5ad67d;
+                }
+            }
+
+            .description {
+                padding: 1rem;
+                background: #fff;
+                position: relative;
+                z-index: 1;
+
+                h1,
+                h2 {
+                    font-family: Poppins, sans-serif;
+                }
+
+                h1 {
+                    line-height: 1;
+                    margin: 0;
+                    font-size: 1.7rem;
+                }
+
+                h2 {
+                    font-size: 1rem;
+                    font-weight: 300;
+                    text-transform: uppercase;
+                    color: #a2a2a2;
+                    margin-top: 5px;
+                }
+
+                .read-more {
+                    text-align: right;
+
+                    a {
+                        color: #6c6c6c;
+                        display: inline-block;
+                        position: relative;
+
+                        &:after {
+                            content: "→";
+                            font-family: FontAwesome;
+                            margin-left: -10px;
+                            opacity: 0;
+                            vertical-align: middle;
+                            transition: margin 0.3s, opacity 0.3s;
+                        }
+
+                        &:hover:after {
+                            margin-left: 5px;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+
+            p {
+                position: relative;
+                margin: 1rem 0 0;
+
+                &:first-of-type {
+                    margin-top: 1.25rem;
+
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        height: 5px;
+                        background: #414141;
+                        width: 35px;
+                        top: -0.75rem;
+                        border-radius: 3px;
+                    }
+                }
+            }
+
+
+            @media (min-width: 640px) {
+                flex-direction: row;
+                max-width: 700px;
+            }
+        }
+</style>
+</head>
+<div class="wrapper">
+    <div class="blog-card">
+        <div class="description">
+            <h1>title</h1>
+            <h2>category</h2>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad eum dolorum architecto obcaecati enim dicta
+                praesentium, quam nobis! Neque ad aliquam facilis numquam. Veritatis, sit.</p>
+            <p class="read-more">
+                <a href="#">Read More</a>
+            </p>
+        </div>
+    </div>
 {%- assign default_paths = site.pages | map: "path" -%}
 {%- for path in default_paths -%}
 {%- assign my_page = site.pages | where: "path", path | first -%}
