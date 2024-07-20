@@ -118,12 +118,13 @@ layout: home
         <div class="description">
             <h1>{{ my_page.title | escape }}</h1>
             <h2>{{ my_page.dir | basename }}</h2>
-            <p> {{ my_page.content | truncatewords: 30 }} </p>
+            <p> {{ my_page.content | truncatewords: 10 }} </p>
             <p class="read-more">
                 <a href="{{ my_page.url | relative_url }}">Read More</a>
             </p>
         </div>
     </div>
+    {{ my_page.content }}
     {%- endif -%}
     {%- endfor -%}
 </div>
