@@ -121,27 +121,21 @@ layout: home
             </p>
         </div>
     </div>
-    <div class="blog-card">
-        <div class="description">
-            <h1>title</h1>
-            <h2>category</h2>
-            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad eum dolorum architecto obcaecati enim dicta
-                praesentium, quam nobis! Neque ad aliquam facilis numquam. Veritatis, sit.</p>
-            <p class="read-more">
-                <a href="#">Read More</a>
-            </p>
-        </div>
-    </div>
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- for path in default_paths -%}
     {%- assign my_page = site.pages | where: "path", path | first -%}
     {%- if my_page.title -%}
-    <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
-    <p>{{ my_page.title }}</p>
-    <p>{{ my_page.dir | basename }}</p>
-    <p>{{ my_page.name }}</p>
-    <p>{{ my_page.name }}</p>
-    {{ my_page.url }}
+    <div class="blog-card">
+        <div class="description">
+            <h1>{{ my_page.title | escape }}</h1>
+            <h2>{{ my_page.dir | basename }}</h2>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad eum dolorum architecto obcaecati enim dicta
+                praesentium, quam nobis! Neque ad aliquam facilis numquam. Veritatis, sit.</p>
+            <p class="read-more">
+                <a href="{{ my_page.url | relative_url }}">Read More</a>
+            </p>
+        </div>
+    </div>
     {%- endif -%}
     {%- endfor -%}
 </div>
