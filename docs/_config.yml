@@ -5,3 +5,5 @@ url: https://co-gy.github.io/
 author: co-gy
 plugins:
   - jekyll-feed
+
+markdown: GFM
