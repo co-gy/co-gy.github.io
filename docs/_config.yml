@@ -16,6 +16,3 @@ minima:
     - { platform: github,  user_url: "https://github.com/co-py" }
 
 show_excerpts: true
-
-include: 
-  - _pages
