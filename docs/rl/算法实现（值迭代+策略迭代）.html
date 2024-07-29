@@ -1,0 +1,703 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>算法实现（值迭代+策略迭代）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="95662e56-f2f0-4010-bf96-a0ba6dec9bdc" class="page sans"><header><h1 class="page-title">算法实现（值迭代+策略迭代）</h1><p class="page-description"></p></header><div class="page-body"><nav id="9a97f2d6-5afa-4ae4-9194-af4d513bf51c" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#c5d1a23d-74da-443a-9e9e-98c48207440d"><strong>概述</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#d9b4fc44-55cf-435c-8967-69fc0436916c"><strong>值迭代</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#418da204-38dc-41c9-ad93-3be294462b89">算法伪代码</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#d50460fe-af09-4c6b-bb73-db051e496dd4"><strong>代码解释</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#50eeecb6-7c3b-4f2e-958c-776dda3f4366"><strong>变量说明</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#36d07971-9498-439d-a66d-fe9df31546b3"><strong>结束迭代条件</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#9609fdc4-45b7-4492-a8eb-83472e4446ae"><strong>核心代码</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#11a51460-e1af-48fc-8987-a5207c3c5fbd">运行结果</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#a67f6654-980d-4c1f-8ef3-b23a98555340">策略迭代</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#039456f4-0690-4e6d-892c-f255c995d980">算法伪代码</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#cc5e57b7-d553-41bc-adc3-4d84695447b6">代码解释</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#4953c00f-f16c-4149-9709-372a0c4662e3">变量说明</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#89dca9cf-22ed-4ad0-8ac1-ee3c2759984f">终止迭代条件</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#932429b1-db12-4f65-8b9f-6fdcc5ced093">核心代码</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#462f3304-9de0-4190-ac79-2238b95eb29a">运行结果</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#63e3729b-e06a-475e-87f5-2daaeeabc57a">结尾</a></div></nav><h1 id="c5d1a23d-74da-443a-9e9e-98c48207440d" class=""><strong>概述</strong></h1><p id="a7211360-23d4-4143-a7b3-5d509790161f" class="">上个学习看了西湖大学赵世钰老师的<a href="https://www.westlake.edu.cn/academics/School_of_Engineering/NEWS/202212/t20221209_24267.shtml">强化学习的数学原理</a>在b站上的网课，还自己去淘宝打印了一本下来（出版社快要出书了可恶555）。后来使用cleanrl玩了几个gym的小游戏，还翻看了一下源码，下载跑通了别人实现的alphago zero五子棋的代码。但是我发现做的这两件事情让我对rl的理解还是不太好，有一种捉摸不透的感觉，可能是一个太偏向理论单看数学，一个单纯调接口、改参数，不用太关注底层实现。所以打算开始实现一下。</p><p id="9bc59ba5-42b3-4961-87d5-8d051e764141" class="">使用的环境是赵老师在github中提供的<a href="https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning/tree/main/Code%20for%20grid%20world/python_version">GridWorld</a>代码（ps：有做一点改动）</p><h1 id="d9b4fc44-55cf-435c-8967-69fc0436916c" class=""><strong>值迭代</strong></h1><h2 id="418da204-38dc-41c9-ad93-3be294462b89" class="">算法伪代码</h2><figure id="b1f635b7-7ec5-4d64-9060-730139e582d8" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/Untitled.png"><img style="width:708.0000610351562px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/Untitled.png"/></a></figure><h2 id="d50460fe-af09-4c6b-bb73-db051e496dd4" class=""><strong>代码解释</strong></h2><h3 id="50eeecb6-7c3b-4f2e-958c-776dda3f4366" class=""><strong>变量说明</strong></h3><p id="071e1936-705f-4213-a4e1-f2c8deab126e" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span></span></span><span>﻿</span></span> ：discount_rate表示</p><p id="bac45ba5-3730-4d69-a652-0442625d5c01" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝑞</mi><mi>𝑘</mi></msub><mo stretchy="false">(</mo><mi>𝑠</mi><mo separator="true">,</mo><mi>𝑎</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">𝑞_𝑘(𝑠,𝑎)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> ：使用q_k[s][a]来表示</p><p id="1b3b6aed-23a4-4d5d-9d1a-b83f6ba67732" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝑣</mi><mi>𝑘</mi></msub><mo stretchy="false">(</mo><mi>𝑠</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">𝑣_𝑘(𝑠)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> ：使用v_k[s]表示</p><p id="b672aae8-0c89-4be1-82d2-dcec11b31200" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>𝑘</mi></msub><mo stretchy="false">(</mo><mi>𝑎</mi><mi mathvariant="normal">∣</mi><mi>𝑠</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\pi_𝑘(𝑎|𝑠)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mord">∣</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> ：由于策略是确定的，所以我们使用 𝜋(𝑠)→𝑎 来表示</p><p id="0a2374cc-4d63-4baa-82ab-0e044ae5195e" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>𝑟</mi></msub><mi>𝑝</mi><mo stretchy="false">(</mo><mi>𝑟</mi><mi mathvariant="normal">∣</mi><mi>𝑠</mi><mo separator="true">,</mo><mi>𝑎</mi><mo stretchy="false">)</mo><mi>𝑟</mi></mrow><annotation encoding="application/x-tex">\sum_𝑟 𝑝(𝑟|𝑠,𝑎)𝑟</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0497em;vertical-align:-0.2997em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.0017em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∣</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span></span><span>﻿</span></span> ：在GridWorld中每个(s, a)对应的reward只有确定的一个，所以这一整项就是 𝑟 ，使用变量reward表示</p><p id="d200c961-aab5-4e25-b7d9-37e6ea7fe5e5" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><msup><mi>𝑠</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msub><mi>𝑝</mi><mo stretchy="false">(</mo><msup><mi>𝑠</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mi mathvariant="normal">∣</mi><mi>𝑠</mi><mo separator="true">,</mo><mi>𝑎</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sum_{𝑠&#x27;} 𝑝(𝑠&#x27;|𝑠,𝑎)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0516em;vertical-align:-0.2997em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1783em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> ：在GridWorld这个环境中每个(s, a)只对应一个确定的下一个s&#x27;，所以这一项就是1，可以忽略了</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="238866d0-41fc-4736-b1c8-7db073209f6f" class="code"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">    discount_rate = 0.9
+    max_iteration = 20
+    q_k = {s: dict.fromkeys(env.action_space, 0) for s in env.state_space}  # q_k(s, a) &lt;- q_k[s][a]
+    v_k = {s: 0 for s in env.state_space}  # v_k(s) &lt;- v_k[s]
+    policy = {s: (1, 0) for s in env.state_space}  # pi(s) &lt;-  policy[s] return a</code></pre><p id="a96b669e-6738-40b8-afdc-69cac612b685" class="">
+</p><h3 id="36d07971-9498-439d-a66d-fe9df31546b3" class=""><strong>结束迭代条件</strong></h3><p id="96a5c48a-5a38-4a29-8f54-287bfcc13b4f" class="">这里使用的是固定迭代次数，书中是<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">∥</mo><msub><mi>𝑣</mi><mrow><mi>𝑘</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>𝑣</mi><mi>𝑘</mi></msub><mo stretchy="false">∥</mo><mo>&lt;</mo><mi>𝑡</mi><mi>h</mi><mi>𝑟</mi><mi>𝑒</mi><mi>𝑠</mi><mi>h</mi><mi>𝑜</mi><mi>𝑙</mi><mi>𝑑</mi></mrow><annotation encoding="application/x-tex"> \lVert 𝑣_{𝑘+1}−𝑣_𝑘 \rVert&lt;𝑡ℎ𝑟𝑒𝑠ℎ𝑜𝑙𝑑</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">∥</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">∥</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">res</span><span class="mord mathnormal">h</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">d</span></span></span></span></span><span>﻿</span></span> ，嫌麻烦（就先固定迭代次数了</p><h3 id="9609fdc4-45b7-4492-a8eb-83472e4446ae" class=""><strong>核心代码</strong></h3><p id="0007aee3-4e17-4641-aff1-931b5af3257e" class="">代码几乎和伪代码一一对应了，对照一下，应该可以很快对应上的</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="51511616-bc93-477b-af12-a65f041ecb82" class="code"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">for t in range(max_iteration):
+    for s in env.state_space:
+        for a in env.action_space:
+            next_state, reward = env._get_next_state_and_reward(s, a)
+            q_k[s][a] = reward + discount_rate * v_k[next_state]
+        max_action_value = max(q_k[s], key=lambda _a: q_k[s][_a])
+        policy[s] = max_action_value  # policy update
+        v_k[s] = max(q_k[s].values())  # value update</code></pre><h2 id="11a51460-e1af-48fc-8987-a5207c3c5fbd" class="">运行结果</h2><p id="d677dade-6e86-4e27-9119-bdd7b0fed603" class="">设置的max_iteration为50，能够训练出正确的policy</p><div id="b0dfd0b5-2b4e-4c10-b323-00c3ef32f164" class="column-list"><div id="d7789b13-3739-47d0-b912-4eebc8cbbc52" style="width:50%" class="column"><figure id="1b2fc171-15e5-4b4f-a63c-b37a8c836858" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/showv.png"><img style="width:640px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/showv.png"/></a></figure></div><div id="44607da5-a09a-4174-8a4d-847689cb0d8a" style="width:50%" class="column"><figure id="e01ceb45-0cad-4923-b1c6-325666a576af" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/testv.png"><img style="width:331px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/testv.png"/></a></figure></div></div><h1 id="a67f6654-980d-4c1f-8ef3-b23a98555340" class="">策略迭代</h1><h2 id="039456f4-0690-4e6d-892c-f255c995d980" class="">算法伪代码</h2><figure id="a85c7814-b44a-45fd-8f00-ce4bc22b33fb" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/Untitled%201.png"><img style="width:708.0000610351562px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/Untitled%201.png"/></a></figure><h2 id="cc5e57b7-d553-41bc-adc3-4d84695447b6" class="">代码解释</h2><h3 id="4953c00f-f16c-4149-9709-372a0c4662e3" class="">变量说明</h3><p id="283f3e09-5c41-423e-9bb4-6fa0ca7e04d9" class="">几乎和值迭代一致，唯一的不同是</p><p id="485faeeb-7a7b-4437-bdd8-4ed01561f92d" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><msub><mi>π</mi><mi>k</mi></msub></msub><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">v_{\pi_k}(s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0059em;vertical-align:-0.2559em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.0359em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2559em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span>：使用v_pi_k[s]表示</p><h3 id="89dca9cf-22ed-4ad0-8ac1-ee3c2759984f" class="">终止迭代条件</h3><p id="46b98144-d131-434b-9931-84767c981828" class="">同样设置max_iteration来省事地结束迭代</p><p id="492b0fba-a051-4496-82c7-3ab54627ea51" class="">在求<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\pi_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>的state value时，同样使用固定迭代次数求解（</p><h3 id="932429b1-db12-4f65-8b9f-6fdcc5ced093" class="">核心代码</h3><p id="03cd09a8-4a6c-44d8-a534-5cd802f17359" class="">也是几乎与伪代码对应的</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d97586c1-8704-4615-bbf0-f6a190f7a0fa" class="code"><code class="language-Python">for t in range(max_iteration):
+    # policy evaluation
+    for _ in range(100):
+        for s in env.state_space:
+            a = policy[s]
+            next_state, reward = env._get_next_state_and_reward(s, a)
+            v_pi_k[s] = reward + discount_rate*v_pi_k[next_state]
+    # policy improvement
+    for s in env.state_space:
+        for a in env.action_space:
+            next_state, reward = env._get_next_state_and_reward(s, a)
+            q_k[s][a] = reward + discount_rate * v_pi_k[next_state]
+        max_action_value = max(q_k[s], key=lambda _a: q_k[s][_a])
+        policy[s] = max_action_value</code></pre><h2 id="462f3304-9de0-4190-ac79-2238b95eb29a" class="">运行结果</h2><p id="13c92fc9-7f56-4190-95b7-41387a269a3e" class="">设置的max_iteration为20，能够训练出正确的policy，对比value iteration迭代次数为20，policy iteration收敛的更快，也算是符合预期</p><div id="5f3910cc-0ca5-4cdf-82f4-18a485142f60" class="column-list"><div id="5583ae3b-6260-40c8-9cf6-876589b9417f" style="width:50%" class="column"><figure id="6618fa23-7251-424b-a59d-743cd214382c" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/showp.png"><img style="width:640px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/showp.png"/></a></figure></div><div id="faabda67-22cb-4e35-914c-ccf949024d2d" style="width:50%" class="column"><figure id="939e0071-0d80-4170-98c3-530f4c28008e" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/testp.png"><img style="width:331px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/testp.png"/></a></figure></div></div><h1 id="63e3729b-e06a-475e-87f5-2daaeeabc57a" class="">结尾</h1><p id="49ce1c15-033a-4a39-9e0a-d1d6da03cbf5" class="">发现当truncate=1时，policy iteration和value iteration几乎是一样的，但是稍微增大一点truncate，收敛速度就会有明显改善</p><figure id="bd7c3cb8-cc65-4034-9067-8227b782e72b" class="image"><a href="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/compare_vi_pi.png"><img style="width:640px" src="%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%80%BC%E8%BF%AD%E4%BB%A3+%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3%EF%BC%89%2095662e56f2f04010bf96a0ba6dec9bdc/compare_vi_pi.png"/></a></figure><p id="11ddd244-35dd-40d9-9f68-3b0c5c978450" class="">
+</p><p id="aebd1d96-d8a9-4848-bea4-9d4e251f9aa0" class="">好好加油，继续努力！</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
