@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
-    <head>
-        <style>
-            h1{
-                font-size: 25px !important;
-            }
-        </style>
-    </head>
-  {%- include head.html -%}
-  <body>
+<html lang="{{ page.lang | default: site.lang | default: " en" }}">
+
+<head>
+    <style>
+        h1 {
+            font-size: 25px !important;
+        }
+    </style>
+</head>
+{%- include head.html -%}
+
+<body>
 
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
+        <div class="wrapper">
+            {{ content }}
+        </div>
     </main>
-
+    <div id="gitalk-container"></div>
     {%- include footer.html -%}
 
-  </body>
-    <script type="text/x-mathjax-config">
+</body>
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       extensions: ["tex2jax.js"],
       jax: ["input/TeX", "output/HTML-CSS"],
@@ -33,5 +35,24 @@
       "HTML-CSS": { availableFonts: ["TeX"] }
     });
   </script>
-  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
-  </html>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+
+<!-- Gitalk 评论 start -->
+<!-- Link Gitalk 的支持文件 -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        // gitalk的主要参数
+        clientID: `Ov23lixcfxMOF1klA7ML`,
+        clientSecret: `6aa9181f581cfe819f0c6edf5628a45392720e1b`,
+        repo: `gitalk-comment`,
+        owner: 'co-gy',
+        admin: ['co-gy'],
+        id: location.pathname,
+    });
+    gitalk.render('gitalk-container');
+</script>
+<!-- Gitalk end -->
+
+</html>
