@@ -1,0 +1,35 @@
++++
+title = "プロフィール"
+showDate = false
+showDateUpdated = false
+showReadingTime = false
+showWordCount = false
+showAuthor = false
+showTableOfContents = false
+showRelatedContent = false
+showPagination = false
+showTaxonomies = false
+showBreadcrumbs = false
++++
+
+## 学歴 {#education}
+
+- **修士課程**、東京科学大学 — 2026.04 – 現在
+- **学士課程**、福州大学 — 2021.09 – 2025.06
+
+## 職歴 {#experience}
+
+- **AI アプリケーションエンジニア**、CATL（寧徳時代）— 2025.08 – 2026.03
+
+## 研究業績 {#research}
+
+### プレプリント
+
+1. **Quit While You're Ahead: Quit for Efficient Candidate Generation in Machine Translation Reranking**  
+   <u>Guangyu Chen</u>, Boxuan Lyu, Hidetaka Kamigaito, Kotaro Funakoshi, Manabu Okumura  
+   *arXiv プレプリント、2026* · [arXiv](https://arxiv.org/abs/2609.00588) · [PDF](https://arxiv.org/pdf/2609.00588)
+
+## プロジェクト {#projects}
+
+- **mllm-prompt-template** — マルチモーダル LLM 向けの Python プロンプトテンプレートライブラリ。`string.Template` を拡張し、プロンプト内での画像置換に対応。  
+  [GitHub](https://github.com/co-gy/mllm-prompt-template) · [PyPI](https://pypi.org/project/mllm-prompt-template/) · [ダウンロード統計](https://pepy.tech/projects/mllm-prompt-template?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=weekly&viewType=line&versions=Total%2C2.*%2C1.*)

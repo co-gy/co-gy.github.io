@@ -1,0 +1,35 @@
+/* Homepage (profile layout): start from the top instead of centering vertically */
+article.text-center:has(> section.prose) {
+  justify-content: flex-start;
+}
+
+/* Homepage (profile layout): left-align the content and let it use the full column */
+article.text-center > section.prose {
+  max-width: none;
+  text-align: start;
+}
+
+/* Hide the big author name on the profile homepage (kept for screen readers / SEO) */
+article.text-center > header h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Social links live in the "Links" menu, so hide the icon row on the homepage */
+article.text-center > header > div.mt-1 {
+  display: none;
+}
+
+/* Typewriter intro on the homepage */
+.home-typeit {
+  min-height: 4rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+}

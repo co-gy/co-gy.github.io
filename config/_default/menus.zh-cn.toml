@@ -1,0 +1,45 @@
+# -- Main Menu --
+# https://blowfish.page/docs/configuration/#menus
+
+[[main]]
+  identifier = "links"
+  name = "链接"
+  weight = 10
+
+[[main]]
+  name = "Google Scholar"
+  parent = "links"
+  pre = "google-scholar"
+  url = "https://scholar.google.com/citations?user=7ZfPu44AAAAJ"
+  weight = 10
+
+[[main]]
+  name = "GitHub"
+  parent = "links"
+  pre = "github"
+  url = "https://github.com/co-gy"
+  weight = 20
+
+[[main]]
+  name = "LinkedIn"
+  parent = "links"
+  pre = "linkedin"
+  url = "https://www.linkedin.com/in/co-gy/"
+  weight = 30
+
+[[main]]
+  name = "个人资料"
+  pageRef = "profile"
+  weight = 20
+
+[[main]]
+  name = "博客"
+  pageRef = "blogs"
+  weight = 30
+
+# -- Footer Menu --
+
+[[footer]]
+  name = "RSS"
+  url = "/zh-cn/index.xml"
+  weight = 10

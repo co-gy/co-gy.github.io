@@ -1,0 +1,25 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "co-gy"
+
+[params]
+  displayName = "English"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+  # logo = "img/logo.png"
+  description = "Personal website of co-gy"
+  # copyright = ""
+
+[params.author]
+  name = "co-gy"
+  # image = "img/avatar.jpg" # place the file under assets/img/
+  links = [
+    { google-scholar = "https://scholar.google.com/citations?user=7ZfPu44AAAAJ" },
+    { github = "https://github.com/co-gy" },
+    { linkedin = "https://www.linkedin.com/in/co-gy/" },
+    # { email = "mailto:you@example.com" },
+    # { orcid = "https://orcid.org/userid" },
+  ]

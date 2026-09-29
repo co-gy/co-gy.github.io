@@ -1,0 +1,11 @@
+# Hugo
+/public/
+/resources/_gen/
+/assets/jsconfig.json
+.hugo_build.lock
+
+# OS / editor
+.DS_Store
+
+# Local Claude Code preview config
+/.claude/

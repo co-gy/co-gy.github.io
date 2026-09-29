@@ -1,0 +1,3 @@
+# Site-level overrides of the theme's zh-CN strings (other keys fall back to themes/blowfish/i18n/zh-CN.yaml)
+footer:
+  powered_by: "由 {{ .Hugo }} &amp; {{ .Theme }} 构建"

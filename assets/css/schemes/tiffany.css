@@ -1,0 +1,37 @@
+/* Tiffany scheme — neutral grays with a deep Tiffany-green accent (#2C98A0) */
+:root {
+  --color-neutral: 255, 255, 255;
+  /* Neutral gray */
+  --color-neutral-50: 250, 250, 250;
+  --color-neutral-100: 245, 245, 245;
+  --color-neutral-200: 229, 229, 229;
+  --color-neutral-300: 212, 212, 212;
+  --color-neutral-400: 163, 163, 163;
+  --color-neutral-500: 115, 115, 115;
+  --color-neutral-600: 82, 82, 82;
+  --color-neutral-700: 64, 64, 64;
+  --color-neutral-800: 38, 38, 38;
+  --color-neutral-900: 23, 23, 23;
+  /* Deep Tiffany green (500 = #2C98A0) */
+  --color-primary-50: 240, 250, 250;
+  --color-primary-100: 214, 241, 242;
+  --color-primary-200: 173, 225, 228;
+  --color-primary-300: 122, 202, 207;
+  --color-primary-400: 72, 176, 183;
+  --color-primary-500: 44, 152, 160;
+  --color-primary-600: 34, 125, 132;
+  --color-primary-700: 29, 101, 107;
+  --color-primary-800: 26, 81, 86;
+  --color-primary-900: 22, 65, 69;
+  /* Secondary — same hue family, slightly greener */
+  --color-secondary-50: 239, 250, 247;
+  --color-secondary-100: 212, 241, 234;
+  --color-secondary-200: 170, 226, 213;
+  --color-secondary-300: 118, 204, 186;
+  --color-secondary-400: 66, 178, 157;
+  --color-secondary-500: 38, 150, 131;
+  --color-secondary-600: 30, 123, 108;
+  --color-secondary-700: 26, 99, 88;
+  --color-secondary-800: 24, 79, 71;
+  --color-secondary-900: 21, 64, 58;
+}
