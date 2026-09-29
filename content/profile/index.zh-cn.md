@@ -31,5 +31,5 @@ showBreadcrumbs = false
 
 ## 开源项目 {#projects}
 
-- **mllm-prompt-template** —— 面向多模态大模型的 Python 提示词模板库，扩展了 `string.Template`，支持在提示词中替换图片。  
+- **mllm-prompt-template** —— 面向多模态大模型的 Python 提示词模板库，扩展了 [`string.Template`](https://docs.python.org/3/library/string.html#string.Template)，支持在提示词中替换图片。  
   [GitHub](https://github.com/co-gy/mllm-prompt-template) · [PyPI](https://pypi.org/project/mllm-prompt-template/) · [下载统计](https://pepy.tech/projects/mllm-prompt-template)

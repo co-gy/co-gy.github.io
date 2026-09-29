@@ -31,5 +31,5 @@ showBreadcrumbs = false
 
 ## プロジェクト {#projects}
 
-- **mllm-prompt-template** — マルチモーダル LLM 向けの Python プロンプトテンプレートライブラリ。`string.Template` を拡張し、プロンプト内での画像置換に対応。  
+- **mllm-prompt-template** — マルチモーダル LLM 向けの Python プロンプトテンプレートライブラリ。[`string.Template`](https://docs.python.org/3/library/string.html#string.Template) を拡張し、プロンプト内での画像置換に対応。  
   [GitHub](https://github.com/co-gy/mllm-prompt-template) · [PyPI](https://pypi.org/project/mllm-prompt-template/) · [ダウンロード統計](https://pepy.tech/projects/mllm-prompt-template?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=weekly&viewType=line&versions=Total%2C2.*%2C1.*)
