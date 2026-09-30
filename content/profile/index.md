@@ -14,8 +14,8 @@ showBreadcrumbs = false
 
 ## Education {#education}
 
-- **Master's**, Institute of Science Tokyo — 2026.04 – Present
-- **Bachelor's**, Fuzhou University — 2021.09 – 2025.06
+- **Master's**, Information and Communications Engineering, School of Engineering, Institute of Science Tokyo · [Okumura–Funakoshi Lab](https://www.lr.first.iir.isct.ac.jp/) — 2026.04 – Present
+- **Bachelor's**, Artificial Intelligence, College of Computer and Data Science, Fuzhou University — 2021.09 – 2025.06
 
 ## Experience {#experience}
 
