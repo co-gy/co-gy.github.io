@@ -56,7 +56,13 @@ From an end-to-end perspective, the computation required for each source is:
 - With MBR decoding: $|\mathcal{C}|^2$ utility (reference-based metric) calls
 - With QE reranking: $|\mathcal{C}|$ QE model (reference-free metric) calls
 
-So there are two directions for acceleration: reduce the number of candidate generations, or reduce the number of utility / QE model calls.
+### Why Does Acceleration Matter?
+
+Take $|\mathcal{C}|=256$: translating a single sentence means generating 256 candidates, and MBR then needs $256^2 = 65{,}536$ utility calls. On top of that, today's utilities are usually neural models, so calling them this many times costs a lot of compute. The quality gains of reranking are well established, but at this cost it fits competitions and offline evaluation far better than real systems with latency and compute budgets.
+
+I care less about squeezing out another fraction of a point on a leaderboard than about whether a method can actually be used. Reranking already works well; what holds it back is mostly cost, so this post collects several ways to bring that cost down.
+
+There are two directions for acceleration: reduce the number of candidate generations, or reduce the number of utility / QE model calls.
 
 ## Acceleration Methods
 
