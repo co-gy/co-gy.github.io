@@ -20,6 +20,6 @@ title = "co-gy"
     { google-scholar = "https://scholar.google.com/citations?user=7ZfPu44AAAAJ" },
     { github = "https://github.com/co-gy" },
     { linkedin = "https://www.linkedin.com/in/co-gy/" },
-    # { email = "mailto:you@example.com" },
+    { email = "mailto:gyc5529@gmail.com" },
     # { orcid = "https://orcid.org/userid" },
   ]

@@ -28,6 +28,13 @@
   weight = 30
 
 [[main]]
+  name = "Email"
+  parent = "links"
+  pre = "email"
+  url = "mailto:gyc5529@gmail.com"
+  weight = 40
+
+[[main]]
   name = "Profile"
   pageRef = "profile"
   weight = 20
