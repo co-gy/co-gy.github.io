@@ -12,4 +12,5 @@ I'm passionate about applied NLP, especially LLM agents and RAG pipelines. In re
 
 ## Updates {#updates}
 
+- **2026.09** — New blog post: [Efficient Machine Translation Reranking]({{< relref "blogs/efficient-mt-reranking" >}}).
 - **2026.09** — I launched my personal page.

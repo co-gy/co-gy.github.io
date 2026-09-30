@@ -12,4 +12,5 @@ title = "首页"
 
 ## 近况 {#updates}
 
+- **2026.09** —— 发布了博客文章《[高效的机器翻译 Reranking 方法]({{< relref "blogs/efficient-mt-reranking" >}})》。
 - **2026.09** —— 我发布了个人主页。
