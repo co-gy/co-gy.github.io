@@ -32,4 +32,4 @@ showBreadcrumbs = false
 ## Projects {#projects}
 
 - **mllm-prompt-template** — A Python template library for multimodal LLMs that extends [`string.Template`](https://docs.python.org/3/library/string.html#string.Template) to support image substitution in prompts.  
-  [GitHub](https://github.com/co-gy/mllm-prompt-template) · [PyPI](https://pypi.org/project/mllm-prompt-template/) · [Download stats](https://pepy.tech/projects/mllm-prompt-template)
+  [GitHub](https://github.com/co-gy/mllm-prompt-template) · [PyPI](https://pypi.org/project/mllm-prompt-template/) · [Download stats](https://pepy.tech/projects/mllm-prompt-template) · <a href="https://pepy.tech/projects/mllm-prompt-template"><img src="https://static.pepy.tech/personalized-badge/mllm-prompt-template?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads" alt="PyPI Downloads" style="display:inline;margin:0;vertical-align:middle"></a>
