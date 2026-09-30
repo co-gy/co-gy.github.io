@@ -1,0 +1,38 @@
+{{/* giscus comments, backed by GitHub Discussions. Enabled for blog posts via cascade in content/blogs/_index*.md */}}
+{{ with site.Params.giscus }}
+  {{ $lang := index (dict "zh-cn" "zh-CN" "ja" "ja" "en" "en") site.Language.Lang | default "en" }}
+  {{/* Key threads by bundle directory so all translations of a post share one discussion */}}
+  {{ $term := $.Page.RelPermalink }}{{ with $.Page.File }}{{ $term = strings.TrimSuffix "/" .Dir }}{{ end }}
+  <div class="giscus"></div>
+  <script>
+    (function () {
+      const theme = () => (document.documentElement.classList.contains("dark") ? "dark" : "light");
+      const s = document.createElement("script");
+      s.src = "https://giscus.app/client.js";
+      s.async = true;
+      s.crossOrigin = "anonymous";
+      Object.entries({
+        repo: {{ .repo }},
+        repoId: {{ .repoId }},
+        category: {{ .category }},
+        categoryId: {{ .categoryId }},
+        mapping: "specific",
+        term: {{ $term }},
+        strict: "1",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        theme: theme(),
+        lang: {{ $lang }},
+        loading: "lazy",
+      }).forEach(([k, v]) => s.setAttribute("data-" + k.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase()), v));
+      document.currentScript.after(s);
+
+      // Follow Blowfish's light/dark toggle
+      new MutationObserver(() => {
+        const frame = document.querySelector("iframe.giscus-frame");
+        frame?.contentWindow.postMessage({ giscus: { setConfig: { theme: theme() } } }, "https://giscus.app");
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    })();
+  </script>
+{{ end }}

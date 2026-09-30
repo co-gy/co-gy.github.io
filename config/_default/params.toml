@@ -207,3 +207,9 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 
 [advertisement]
   # adsense = ""
+
+[giscus]
+  repo = "co-gy/co-gy.github.io"
+  repoId = "R_kgDOUycRcw"
+  category = "Announcements"
+  categoryId = "DIC_kwDOUycRc84DGu3x"
