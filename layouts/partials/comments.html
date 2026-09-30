@@ -24,7 +24,6 @@
         inputPosition: "bottom",
         theme: theme(),
         lang: {{ $lang }},
-        loading: "lazy",
       }).forEach(([k, v]) => s.setAttribute("data-" + k.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase()), v));
       document.currentScript.after(s);
 
