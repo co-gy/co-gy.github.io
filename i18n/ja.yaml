@@ -1,0 +1,3 @@
+# Site-level overrides of the theme's ja strings (other keys fall back to themes/blowfish/i18n/ja.yaml)
+header:
+  home: "ホーム"
