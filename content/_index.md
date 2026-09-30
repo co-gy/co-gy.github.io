@@ -8,7 +8,7 @@ Hi, I'm Guangyu Chen, master student at <a href="https://www.lr.first.iir.isct.a
 
 ## About {#about}
 
-I'm passionate about applied NLP, especially LLM agents and RAG pipelines. In research, I focus on making these technologies more usable; in my previous work, I aimed to turn ideas into reliable, practical systems that create real value.
+I'm passionate about applied NLP, including machine translation, LLM agents, and RAG pipelines. In research, I focus on making machine translation more efficient and usable, currently by reducing its computational cost; in my previous work, I aimed to translate real-world problems into technical ones and turn ideas into reliable, practical LLM agent systems that create real value.
 
 ## Updates {#updates}
 
