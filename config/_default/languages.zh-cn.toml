@@ -15,7 +15,7 @@ title = "co-gy"
 
 [params.author]
   name = "co-gy"
-  # image = "img/avatar.jpg" # 文件放在 assets/img/ 下
+  image = "img/avatar.gif"
   links = [
     { google-scholar = "https://scholar.google.com/citations?user=7ZfPu44AAAAJ" },
     { github = "https://github.com/co-gy" },

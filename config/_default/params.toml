@@ -20,7 +20,7 @@ replyByEmail = false
 mainSections = ["blogs"]
 # robots = ""
 
-disableImageOptimization = false
+disableImageOptimization = true # serve the animated GIF avatar as-is (Markdown images are still optimized via disableImageOptimizationMD)
 disableImageOptimizationMD = false
 disableTextInHeader = false
 # backgroundImageWidth = 1200

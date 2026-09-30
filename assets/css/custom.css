@@ -41,3 +41,10 @@ article.text-center > header > div.mt-1 {
 .article-content h3 {
   font-weight: 700;
 }
+
+/* Homepage avatar: square instead of the theme's circle; it is served unprocessed (animated GIF),
+   so crop it to the square box instead of stretching */
+article.text-center > header img {
+  border-radius: 0;
+  object-fit: cover;
+}
