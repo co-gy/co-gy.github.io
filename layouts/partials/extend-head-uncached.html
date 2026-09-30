@@ -1,0 +1,7 @@
+{{/* Load KaTeX CSS only on pages that contain math (set by render-passthrough.html) */}}
+{{ if .Page.Store.Get "hasMath" }}
+  {{ $katexCSS := resources.Get "lib/katex/katex.min.css" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <link type="text/css" rel="stylesheet" href="{{ $katexCSS.RelPermalink }}" integrity="{{ $katexCSS.Data.Integrity }}">
+  {{/* Publish KaTeX fonts referenced by the CSS */}}
+  {{ range resources.Match "lib/katex/fonts/*" }}{{ $_ := .RelPermalink }}{{ end }}
+{{ end }}
